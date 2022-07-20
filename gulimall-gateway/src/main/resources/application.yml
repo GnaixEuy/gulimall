@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gulimall-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: baidu_route
+          uri: http://www.baidu.com
+          predicates:
+            - Query=url,baidu
+        - id: test_route
+          uri: http://www.qq.com
+          predicates:
+            - Query=url,qq
+    nacos:
+      server-addr: localhost:8848
+server:
+  port: 88
