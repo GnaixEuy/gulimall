@@ -1,0 +1,20 @@
+server:
+  port: 30000
+
+spring:
+  application:
+    name: gulimall-third-party
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        namespace: 1d6fd451-e781-4bb7-8214-fe3a8f848ed9
+        server-addr: 127.0.0.1
+    alicloud:
+      oss:
+        endpoint: oss-cn-hangzhou.aliyuncs.com
+
+logging:
+  level:
+    cn.fluorescent.gulimall.product: debug
