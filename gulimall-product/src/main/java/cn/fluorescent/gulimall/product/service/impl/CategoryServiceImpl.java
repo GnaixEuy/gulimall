@@ -10,9 +10,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -47,6 +45,43 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         // 逻辑删除
         baseMapper.deleteBatchIds(asList);
     }
+
+    /**
+     * 找到一个三级目录对应的完整路径 [2,25,225]  /电器/好电器/手机
+     */
+
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        //新建一个ArrayList集合 接受Long
+        List<Long> paths = new ArrayList<>();
+
+        //调用方法找到完整路径[225，22，2]
+        List<Long> parentPath = findParentPath(catelogId, paths);
+
+        //调用逆序方法获得正确顺序[2,25,225]
+        Collections.reverse(parentPath);
+
+
+        return parentPath.toArray(new Long[parentPath.size()]);
+    }
+
+    /**
+     * 找到一个三级目录对应的完整路径 [2,25,225]  /电器/好电器/手机
+     */
+    private List<Long> findParentPath(Long catelogId, List<Long> paths) {
+        //1、收集当前节点id
+        paths.add(catelogId);
+        //2 根据当前节点ID拿到其对应的实体类
+        CategoryEntity byId = this.getById(catelogId);
+        //3 当实体类父id不为0继续调用这个方法
+        if (byId.getParentCid() != 0) {
+            findParentPath(byId.getParentCid(), paths);
+        }
+        //4 跳出递归循环返回数据
+        return paths;
+
+    }
+
 
     // 递归查找所有菜单的子菜单
     private List<CategoryEntity> getChildrens(CategoryEntity root, List<CategoryEntity> all) {

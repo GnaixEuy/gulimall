@@ -1,7 +1,9 @@
 package cn.fluorescent.gulimall.product.controller;
 
 import cn.fluorescent.gulimall.common.utils.R;
+import cn.fluorescent.gulimall.product.entity.CategoryBrandRelationEntity;
 import cn.fluorescent.gulimall.product.entity.CategoryEntity;
+import cn.fluorescent.gulimall.product.service.CategoryBrandRelationService;
 import cn.fluorescent.gulimall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("product/category")
 public class CategoryController {
-    @Autowired
     private CategoryService categoryService;
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     /**
      * 列表
@@ -53,9 +55,8 @@ public class CategoryController {
      * 保存
      */
     @RequestMapping("/save")
-    //@RequiresPermissions("product:category:save")
-    public R save(@RequestBody CategoryEntity category) {
-        categoryService.save(category);
+    public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation) {
+        categoryBrandRelationService.saveDetail(categoryBrandRelation);
 
         return R.ok();
     }
@@ -86,4 +87,13 @@ public class CategoryController {
         return R.ok();
     }
 
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @Autowired
+    public void setCategoryBrandRelationService(CategoryBrandRelationService categoryBrandRelationService) {
+        this.categoryBrandRelationService = categoryBrandRelationService;
+    }
 }
