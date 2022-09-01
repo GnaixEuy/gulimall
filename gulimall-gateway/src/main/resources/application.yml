@@ -32,4 +32,4 @@ spring:
         server-addr: localhost:8848
 
 server:
-  port: 88
+  port: 89
